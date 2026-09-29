@@ -175,7 +175,7 @@ footer{max-width:1180px;margin:0 auto;padding:18px;border-top:1px solid var(--li
 
 <footer id="footer"></footer>
 
-<script src="data.js"></script>
+<script src="data.js?v=20260929b"></script>
 <script>
 (function(){
 "use strict";
@@ -192,7 +192,7 @@ function bmap(n){ return "https://map.baidu.com/search/"+enc(n); }
 /* ---------- 头部信息 ---------- */
 document.getElementById("hdmeta").innerHTML =
   "行程窗口："+esc(D.meta.window)+" ｜ 出发地："+esc(D.meta.departures)+
-  " ｜ 数据更新："+esc(D.meta.updated)+" ｜ 里程为实际路网里程 ｜ 演示版（未部署）";
+  " ｜ 数据更新："+esc(D.meta.updated)+" ｜ 里程为实际路网里程 ｜ 两家人共用，可留言提需求";
 document.getElementById("footer").innerHTML =
   D.meta.note+"<br>数据来源：里程/车时为 OSRM 路网计算；日出日落为天文算法计算；船班、停车、门票信息来自湛江本地宝（2024-01）、湛江市政府文旅页面（2022）及景区公开信息，均需现场核实；房价为平台挂牌参考价区间，以平台实时价为准。<br>本页只陈述方案A/B 的路程与时间数据，判断与优劣论证集中在“方案对比”页。";
 
