@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>湛江国庆自驾 · 路线方案站（方案A / 方案B）</title>
+<style>
+:root{
+  --bg:#0f1424; --bg2:#161d33; --panel:#1b2338; --panel2:#212b44;
+  --line:#2c3854; --txt:#e8eef7; --dim:#9fb0c8; --accent:#4fc3f7; --accent2:#7ee081;
+  --warn:#ffcc66; --danger:#ff7b72; --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;-webkit-text-size-adjust:100%}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+header{background:linear-gradient(160deg,#16203a,#0f1424);border-bottom:1px solid var(--line);padding:16px 18px 12px;position:sticky;top:0;z-index:50}
+.hd{max-width:1180px;margin:0 auto}
+h1{font-size:19px;letter-spacing:.5px}
+h1 small{font-size:12px;color:var(--dim);font-weight:400;margin-left:8px}
+.hd .meta{font-size:12px;color:var(--dim);margin-top:4px}
+.tabs{max-width:1180px;margin:10px auto 0;display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;padding:7px 13px;border-radius:999px;background:var(--panel);border:1px solid var(--line);color:var(--dim);font-size:13px;cursor:pointer}
+.tab.active{background:rgba(79,195,247,.16);border-color:var(--accent);color:var(--accent);font-weight:600}
+.badge{display:inline-block;min-width:17px;padding:0 5px;border-radius:9px;background:var(--danger);color:#fff;font-size:11px;margin-left:5px;text-align:center}
+main{max-width:1180px;margin:0 auto;padding:18px 18px 60px}
+.view{display:none}
+.view.on{display:block}
+h2{font-size:17px;margin:22px 0 10px;padding-left:10px;border-left:3px solid var(--accent)}
+h2:first-child{margin-top:4px}
+h3{font-size:15px;margin:16px 0 8px;color:var(--accent2)}
+p.lead{color:var(--dim);font-size:13.5px;margin-bottom:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px}
+.card.hl{border-color:rgba(79,195,247,.45);background:linear-gradient(180deg,rgba(79,195,247,.07),rgba(79,195,247,.02))}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+th{background:rgba(79,195,247,.13);color:#cfe9ff;font-weight:600;white-space:nowrap}
+tbody tr:nth-child(even){background:rgba(255,255,255,.02)}
+.tbl-wrap{overflow-x:auto}
+ul.list{margin:4px 0 4px 18px;font-size:13.5px}
+ul.list li{margin-bottom:4px}
+.tag{display:inline-block;font-size:11.5px;padding:2px 8px;border-radius:999px;background:rgba(126,224,129,.13);color:var(--accent2);border:1px solid rgba(126,224,129,.3);margin:0 5px 5px 0}
+.tag.b{background:rgba(79,195,247,.13);color:var(--accent);border-color:rgba(79,195,247,.3)}
+.tag.w{background:rgba(255,204,102,.13);color:var(--warn);border-color:rgba(255,204,102,.32)}
+.grid{display:grid;gap:11px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
+.poi{cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 13px;transition:.16s;position:relative}
+.poi:hover{transform:translateY(-2px);border-color:var(--accent);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.poi .pn{font-size:14.5px;font-weight:600}
+.poi .pr{font-size:11.5px;color:var(--dim);margin-top:2px}
+.poi .pd{font-size:12.5px;color:var(--dim);margin-top:7px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.poi.sel{border-color:var(--accent2);background:linear-gradient(180deg,rgba(126,224,129,.1),rgba(126,224,129,.02))}
+.poi .ck{position:absolute;top:9px;right:10px;font-size:12px;color:var(--accent2);font-weight:700}
+.btn{display:inline-block;padding:7px 13px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);font-size:13px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:linear-gradient(180deg,#2d8fd1,#1f6ea6);border-color:#2d8fd1;color:#fff;font-weight:600}
+.btn.sm{padding:4px 9px;font-size:12px;border-radius:7px}
+.btn.g{background:rgba(126,224,129,.14);border-color:rgba(126,224,129,.4);color:var(--accent2)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+select,input,textarea{background:#0d1220;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:7px 9px;font-size:13px;font-family:inherit}
+textarea{width:100%;min-height:88px;resize:vertical}
+label{font-size:13px;color:var(--dim)}
+.stat{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0}
+.stat div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:9px 13px;min-width:105px}
+.stat b{display:block;font-size:19px;color:var(--accent)}
+.stat span{font-size:11.5px;color:var(--dim)}
+.modal{position:fixed;inset:0;background:rgba(6,9,17,.82);display:none;z-index:200;padding:16px;overflow-y:auto}
+.modal.on{display:block}
+.modal .box{max-width:760px;margin:24px auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px}
+.modal .x{float:right;cursor:pointer;color:var(--dim);font-size:20px;line-height:1}
+.cm{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:10px 13px;margin-bottom:9px;font-size:13px}
+.cm .h{font-size:11.5px;color:var(--dim);margin-bottom:4px}
+footer{max-width:1180px;margin:0 auto;padding:18px;border-top:1px solid var(--line);color:var(--dim);font-size:12px}
+.notice{background:rgba(255,204,102,.09);border:1px solid rgba(255,204,102,.32);border-radius:10px;padding:10px 13px;font-size:12.5px;color:#f2dfae;margin-bottom:12px}
+.tiny{font-size:11.5px;color:var(--dim)}
+.legs th:first-child,.legs td:first-child{white-space:nowrap}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);background:#243149;border:1px solid var(--accent);color:var(--txt);
+  padding:9px 16px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:.22s;z-index:300;box-shadow:0 8px 22px rgba(0,0,0,.45)}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:600px){h1{font-size:17px}main{padding:14px 12px 50px}.stat div{min-width:88px;padding:7px 10px}.stat b{font-size:16px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd">
+    <h1>湛江国庆自驾 · 路线方案站 <small>方案A 南极村线 / 方案B 湖光岩线</small></h1>
+    <div class="meta" id="hdmeta"></div>
+  </div>
+  <nav class="tabs" id="tabs"></nav>
+</header>
+
+<main>
+  <section id="v-planA" class="view"></section>
+  <section id="v-planB" class="view"></section>
+  <section id="v-compare" class="view"></section>
+
+  <section id="v-builder" class="view">
+    <h2>自由组合 · 路线与时间计算</h2>
+    <p class="lead">点击地点卡片进行选择/取消（可多选，顺序即行程顺序）。下方按“出发地 → 所选地点依次 → 可选回程”计算实际路网里程与时间。</p>
+    <div class="card">
+      <div class="row">
+        <label>出发地</label>
+        <select id="origin">
+          <option value="huangpu">广州黄埔</option>
+          <option value="shunde">佛山顺德</option>
+        </select>
+        <label><input type="checkbox" id="backhome"> 计算返回出发地</label>
+        <label>每日驾驶上限</label>
+        <select id="daylimit">
+          <option value="3">3 小时</option>
+          <option value="4">4 小时</option>
+          <option value="5" selected>5 小时</option>
+          <option value="6">6 小时</option>
+        </select>
+        <button class="btn pri" id="calc">计算路线与时间</button>
+        <button class="btn" id="autosort">自动排序（最近邻）</button>
+        <button class="btn" id="clear">清空选择</button>
+      </div>
+      <div class="tiny" id="selinfo"></div>
+    </div>
+    <div class="stat" id="builderstat"></div>
+    <div id="buildertable"></div>
+    <h3>选择地点（<span class="tiny">灰色标签为备选地点，不在方案A/B主线内</span>）</h3>
+    <div class="grid g4" id="buildercards"></div>
+  </section>
+
+  <section id="v-library" class="view">
+    <h2>地点库 · 介绍 / 游玩项目 / 特点</h2>
+    <p class="lead">点击任意卡片查看详细介绍。所有地点的里程均来自实际路网计算。</p>
+    <div class="grid g3" id="libcards"></div>
+  </section>
+
+  <section id="v-stay" class="view"></section>
+
+  <section id="v-tools" class="view">
+    <h2>工具 · 天气 / 潮汐 / 渡轮 / 路况</h2>
+    <p class="lead">出发前 3 天开始逐日核对：先看台风，再看潮汐（赶海时段），最后看船班与路况。</p>
+    <div id="toolsbox"></div>
+
+    <h2>实时留言</h2>
+    <p class="lead">下方显示已提交的评价与需求。提交后立即显示（保存在本机浏览器）；路飞每小时整理一次，经确认后并入页面内容。</p>
+    <div class="row">
+      <button class="btn g" id="copycm">复制全部留言（发给路飞）</button>
+      <button class="btn" id="clearlocal">清空本机未提交记录</button>
+    </div>
+    <div id="cmlist"></div>
+
+    <h2>留言 / 提需求</h2>
+    <div class="card">
+      <div class="row">
+        <label>署名（可选）</label><input id="cmname" placeholder="如：黄埔家 / 顺德家">
+        <label>类型</label>
+        <select id="cmtype">
+          <option>行程建议</option>
+          <option>新需求</option>
+          <option>信息纠错</option>
+          <option>其他</option>
+        </select>
+      </div>
+      <textarea id="cmtext" placeholder="写下你的评价、需求或发现的信息错误，例如：希望第 3 天增加午休时间 / 某酒店价格写错了 / 想加一个赶海点"></textarea>
+      <div class="row">
+        <button class="btn pri" id="cmadd">提交留言</button>
+        <span class="tiny">提交后可在“实时留言”区看到；路飞整理时以这里的内容为准。</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal" id="modal"><div class="box" id="modalbox"></div></div>
+  <div id="toast"></div>
+</main>
+
+<footer id="footer"></footer>
+
+<script src="data.js"></script>
+<script>
+(function(){
+"use strict";
+var D = window.ZJ;
+var P = {}; D.points.forEach(function(p){ P[p.id]=p; });
+var KIND_LABEL = {start:"出发地", site:"景点", transport:"交通节点", alt:"备选地点"};
+
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+function fmtH(h){ if(h==null) return "-"; var m=Math.round(h*60); return Math.floor(m/60)+" h "+String(m%60).padStart(2,"0")+" m"; }
+function enc(s){ return encodeURIComponent(s); }
+function amap(n){ return "https://www.amap.com/search?query="+enc(n); }
+function bmap(n){ return "https://map.baidu.com/search/"+enc(n); }
+
+/* ---------- 头部信息 ---------- */
+document.getElementById("hdmeta").innerHTML =
+  "行程窗口："+esc(D.meta.window)+" ｜ 出发地："+esc(D.meta.departures)+
+  " ｜ 数据更新："+esc(D.meta.updated)+" ｜ 里程为实际路网里程 ｜ 演示版（未部署）";
+document.getElementById("footer").innerHTML =
+  D.meta.note+"<br>数据来源：里程/车时为 OSRM 路网计算；日出日落为天文算法计算；船班、停车、门票信息来自湛江本地宝（2024-01）、湛江市政府文旅页面（2022）及景区公开信息，均需现场核实；房价为平台挂牌参考价区间，以平台实时价为准。<br>本页只陈述方案A/B 的路程与时间数据，判断与优劣论证集中在“方案对比”页。";
+
+/* ---------- 标签页 ---------- */
+var TABS = [
+  ["planA","方案A · 南极村线"],["planB","方案B · 湖光岩线"],["compare","方案对比"],
+  ["builder","自由组合"],["library","地点库"],["stay","住宿附录"],["tools","工具 · 留言"]
+];
+var tabsEl = document.getElementById("tabs");
+TABS.forEach(function(t,i){
+  var b=document.createElement("button");
+  b.className="tab"; b.dataset.k=t[0]; b.innerHTML=t[1]+(t[0]==="tools"?'<span class="badge" id="cmbadge" style="display:none">0</span>':"");
+  b.onclick=function(){ location.hash="#/"+t[0]; };
+  tabsEl.appendChild(b);
+});
+function show(k){
+  if(!k) k="planA";
+  TABS.forEach(function(t){ document.getElementById("v-"+t[0]).classList.toggle("on", t[0]===k); });
+  Array.prototype.forEach.call(tabsEl.children,function(b){ b.classList.toggle("active", b.dataset.k===k); });
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",function(){ show((location.hash||"").replace("#/","")); });
+
+/* ---------- 方案页（仅事实） ---------- */
+function planHTML(plan){
+  var h = '<h2>'+esc(plan.name)+'</h2>';
+  h += '<p class="lead">路线：'+esc(plan.summary)+'</p>';
+  h += '<div class="card hl"><div class="row">'+plan.facts.map(function(f){return '<span class="tag b">'+esc(f)+'</span>';}).join("")+'</div>';
+  h += '<div class="tiny">本页只列出里程、时间与时间轴等事实数据，不做优劣判断；判断见“方案对比”页。</div></div>';
+  h += '<h3>逐日路程与时间</h3>';
+  plan.days.forEach(function(d){
+    h += '<div class="card"><div class="row" style="justify-content:space-between"><b>'+esc(d.date)+' ｜ '+esc(d.title)+'</b>';
+    h += '<span><span class="tag">路上 '+esc(d.holidayRoad)+'</span><span class="tag w">游玩 '+esc(d.play)+'</span></span></div>';
+    h += '<div class="tbl-wrap"><table class="legs"><thead><tr><th>路段</th><th>路网里程</th><th>纯车时</th><th>国庆预估</th></tr></thead><tbody>';
+    d.segs.forEach(function(s){
+      h += '<tr><td>'+esc(s.label)+'</td><td>'+(s.km?(s.km+" km"):"—")+'</td><td>'+(s.h?fmtH(s.h):"—")+'</td><td>'+esc(s.holiday||"—")+'</td></tr>';
+    });
+    h += '</tbody></table></div>';
+    h += '<div class="tiny">当日合计：'+esc(d.road)+' ｜ 国庆预估：'+esc(d.holidayRoad)+'</div>';
+    h += '<h3>时间轴</h3><ul class="list">'+d.timeline.map(function(t){return "<li>"+esc(t)+"</li>";}).join("")+'</ul>';
+    h += '<div class="row">'+d.facts.map(function(f){return '<span class="tag b">'+esc(f)+'</span>';}).join("")+'</div>';
+    h += '</div>';
+  });
+  return h;
+}
+document.getElementById("v-planA").innerHTML = planHTML(D.plans.A);
+document.getElementById("v-planB").innerHTML = planHTML(D.plans.B);
+
+/* ---------- 对比页 ---------- */
+(function(){
+  var c = D.compare, h = '<h2>方案A / 方案B 对比</h2><p class="lead">下表先并列事实数据，再分别给出两个方案的优势与劣势论证，最后是条件化的选择依据。</p>';
+  h += '<div class="tbl-wrap"><table><thead><tr>'+c.rows[0].map(function(x){return "<th>"+esc(x)+"</th>";}).join("")+'</tr></thead><tbody>';
+  c.rows.slice(1).forEach(function(r){ h += "<tr>"+r.map(function(x){return "<td>"+esc(x)+"</td>";}).join("")+"</tr>"; });
+  h += '</tbody></table></div>';
+  h += '<div class="grid g2" style="margin-top:14px">';
+  h += '<div class="card"><h3>方案A 优势</h3><ul class="list">'+c.prosA.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul>';
+  h += '<h3>方案A 劣势</h3><ul class="list">'+c.consA.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul></div>';
+  h += '<div class="card"><h3>方案B 优势</h3><ul class="list">'+c.prosB.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul>';
+  h += '<h3>方案B 劣势</h3><ul class="list">'+c.consB.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul></div>';
+  h += '</div>';
+  h += '<h2>按条件选择</h2><div class="tbl-wrap"><table><thead><tr>'+c.decision[0].map(function(x){return "<th>"+esc(x)+"</th>";}).join("")+'</tr></thead><tbody>';
+  c.decision.slice(1).forEach(function(r){ h += "<tr>"+r.map(function(x){return "<td>"+esc(x)+"</td>";}).join("")+"</tr>"; });
+  h += '</tbody></table></div>';
+  h += '<div class="notice">两方案的共同前提：车不上硇洲岛（国庆车渡排队 2-4 小时/次），人乘快艇客船、岛上租电动车。该前提已计入上表中两方案的岛上时间。</div>';
+  document.getElementById("v-compare").innerHTML = h;
+})();
+
+/* ---------- 地点详情弹窗 ---------- */
+function openPoi(id){
+  var p = P[id]; if(!p) return;
+  var h = '<span class="x" onclick="document.getElementById(\'modal\').classList.remove(\'on\')">×</span>';
+  h += '<h2 style="margin-top:0">'+esc(p.name)+'</h2>';
+  h += '<div class="row"><span class="tag b">'+esc(KIND_LABEL[p.kind]||"")+'</span><span class="tag">'+esc(p.region)+'</span>'
+     + '<span class="tag">建议停留 '+esc(p.hours)+'</span><span class="tag w">门票 '+esc(p.ticket)+'</span></div>';
+  h += '<p style="font-size:13.5px">'+esc(p.intro)+'</p>';
+  h += '<h3>游玩项目</h3><ul class="list">'+p.play.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul>';
+  h += '<h3>特点与提示</h3><ul class="list">'+p.features.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul>';
+  h += '<h3>坐标</h3><div class="tiny">'+p.lat.toFixed(4)+", "+p.lon.toFixed(4)+'（WGS84，用于路网里程计算）</div>';
+  h += '<div class="row" style="margin-top:12px"><a class="btn" target="_blank" rel="noopener" href="'+amap(p.name)+'">高德地图搜索</a>'
+     + '<a class="btn" target="_blank" rel="noopener" href="'+bmap(p.name)+'">百度地图搜索</a>'
+     + '<button class="btn pri" onclick="window.__addPoi(\''+p.id+'\')">加入自由组合</button></div>';
+  document.getElementById("modalbox").innerHTML = h;
+  document.getElementById("modal").classList.add("on");
+}
+document.getElementById("modal").onclick=function(e){ if(e.target.id==="modal") this.classList.remove("on"); };
+window.openPoi = openPoi;
+
+/* ---------- 地点库 ---------- */
+(function(){
+  var order = ["site","transport","alt","start"];
+  var sorted = D.points.slice().sort(function(a,b){ return order.indexOf(a.kind)-order.indexOf(b.kind); });
+  document.getElementById("libcards").innerHTML = sorted.map(function(p){
+    return '<div class="poi" onclick="openPoi(\''+p.id+'\')"><div class="pn">'+esc(p.name)+'</div>'
+      + '<div class="pr">'+esc(KIND_LABEL[p.kind])+' · '+esc(p.region)+' · 停留 '+esc(p.hours)+'</div>'
+      + '<div class="pd">'+esc(p.intro)+'</div>'
+      + '<div style="margin-top:8px">'+p.features.slice(0,2).map(function(f){return '<span class="tag">'+esc(f)+'</span>';}).join("")+'</div></div>';
+  }).join("");
+})();
+
+/* ---------- 自由组合 ---------- */
+var SEL = [];
+try{ SEL = JSON.parse(localStorage.getItem("zj_sel")||"[]") || []; }catch(e){ SEL=[]; }
+SEL = SEL.filter(function(id){ return P[id] && P[id].kind!=="start"; });
+
+function saveSel(){ try{ localStorage.setItem("zj_sel", JSON.stringify(SEL)); }catch(e){} }
+function leg(a,b){
+  if(!a||!b) return null;
+  if(a===b) return null;
+  var f=D.ferry;
+  if((a===f.from&&b===f.to)||(a===f.to&&b===f.from)) return {km:f.km, h:f.minutes/60, ferry:true, note:f.note};
+  if(D.matrix[a+">"+b]) return {km:D.matrix[a+">"+b][0], h:D.matrix[a+">"+b][1]};
+  if(D.matrix[b+">"+a]) return {km:D.matrix[b+">"+a][0], h:D.matrix[b+">"+a][1]};
+  return null;
+}
+function calcRoute(){
+  var origin = document.getElementById("origin").value;
+  var back = document.getElementById("backhome").checked;
+  var stops = SEL.slice();
+  var seq = [origin].concat(stops);
+  if(back && stops.length) seq.push(origin);
+  var legs=[], km=0, h=0, ferryN=0;
+  for(var i=0;i<seq.length-1;i++){
+    var L = leg(seq[i],seq[i+1]);
+    if(!L) { legs.push({a:seq[i],b:seq[i+1],miss:true}); continue; }
+    legs.push({a:seq[i],b:seq[i+1],km:L.km,h:L.h,ferry:L.ferry,note:L.note});
+    km+=L.km; h+=L.h; if(L.ferry) ferryN++;
+  }
+  return {origin:origin,back:back,seq:seq,legs:legs,km:km,h:h,ferryN:ferryN};
+}
+function renderCalc(){
+  var r = calcRoute();
+  var k = 1.35; /* 国庆系数 */
+  var limit = parseFloat(document.getElementById("daylimit").value);
+  var st = document.getElementById("builderstat");
+  var days = r.h>0 ? Math.ceil((r.h*k)/limit) : 0;
+  st.innerHTML =
+    '<div><b>'+r.km.toFixed(1)+' km</b><span>路网总里程</span></div>'
+  + '<div><b>'+fmtH(r.h)+'</b><span>纯车时（不含渡轮排队）</span></div>'
+  + '<div><b>'+fmtH(r.h*k)+'</b><span>国庆预估（×'+k+'）</span></div>'
+  + '<div><b>'+days+' 天</b><span>按每日 '+limit+' h 驾驶上限</span></div>';
+
+  var t = '<div class="tbl-wrap"><table class="legs"><thead><tr><th>#</th><th>路段</th><th>里程</th><th>纯车时</th><th>导航</th></tr></thead><tbody>';
+  if(!r.legs.length){ t += '<tr><td colspan="5" class="tiny">尚未选择地点。</td></tr>'; }
+  r.legs.forEach(function(L,i){
+    if(L.miss){ t += '<tr><td>'+(i+1)+'</td><td colspan="4" class="tiny">'+esc(P[L.a].name)+' → '+esc(P[L.b].name)+'：暂无路网数据（该组合需现场确认）</td></tr>'; return; }
+    t += '<tr><td>'+(i+1)+'</td><td>'+esc(P[L.a].name)+' → '+esc(P[L.b].name)+(L.ferry?' <span class="tag w">渡轮段</span>':'')+'</td>'
+      + '<td>'+L.km.toFixed(1)+' km</td><td>'+(L.ferry?("船程约 "+Math.round(L.h*60)+" 分钟"):fmtH(L.h))+'</td>'
+      + '<td><a target="_blank" rel="noopener" href="'+amap(P[L.a].name+" 到 "+P[L.b].name)+'">高德</a></td></tr>';
+  });
+  t += '</tbody></table></div>';
+  if(r.ferryN) t += '<div class="tiny">含渡轮段 '+r.ferryN+' 段：船程已计入，国庆排队 0.5-1.5 h 未计入驾驶时间。</div>';
+  t += '<div class="tiny" style="margin-top:6px">计算口径：路网实际里程（OSRM）；国庆预估＝纯车时 ×1.35（含拥堵与休息）；天数＝国庆预估 ÷ 每日驾驶上限（向上取整），不含景点停留时间。</div>';
+  document.getElementById("buildertable").innerHTML = t;
+
+  document.getElementById("selinfo").innerHTML = r.seq.map(function(id){ return esc(P[id].name); }).join(" → ") || "尚未选择地点";
+}
+function renderCards(){
+  var list = D.points.filter(function(p){ return p.kind!=="start"; });
+  document.getElementById("buildercards").innerHTML = list.map(function(p){
+    var on = SEL.indexOf(p.id)>=0;
+    return '<div class="poi'+(on?' sel':'')+'" data-id="'+p.id+'">'
+      + (on?'<span class="ck">已选 '+SEL.indexOf(p.id)+'</span>':'')
+      + '<div class="pn">'+esc(p.name)+'</div>'
+      + '<div class="pr">'+esc(KIND_LABEL[p.kind])+' · '+esc(p.region)+'</div>'
+      + '<div style="margin-top:7px">'+p.play.slice(0,3).map(function(x){return '<span class="tag'+(p.kind==="alt"?"":" b")+'">'+esc(x)+'</span>';}).join("")+'</div>'
+      + '<div class="row" style="margin:8px 0 0"><button class="btn sm" data-detail="'+p.id+'">详情</button>'
+      + '<button class="btn sm '+(on?"":"g")+'" data-toggle="'+p.id+'">'+(on?"取消选择":"选择")+'</button></div></div>';
+  }).join("");
+}
+document.getElementById("buildercards").addEventListener("click",function(e){
+  var t = e.target.closest("[data-toggle]"), dt = e.target.closest("[data-detail]");
+  if(dt){ e.stopPropagation(); openPoi(dt.dataset.detail); return; }
+  if(t){
+    var id=t.dataset.toggle, i=SEL.indexOf(id);
+    if(i>=0) SEL.splice(i,1); else SEL.push(id);
+    saveSel(); renderCards(); renderCalc();
+  }
+});
+window.__addPoi = function(id){
+  if(P[id].kind==="start") return;
+  if(SEL.indexOf(id)<0){ SEL.push(id); saveSel(); renderCards(); renderCalc(); }
+  document.getElementById("modal").classList.remove("on");
+  location.hash="#/builder";
+};
+document.getElementById("calc").onclick = renderCalc;
+document.getElementById("clear").onclick = function(){ SEL=[]; saveSel(); renderCards(); renderCalc(); };
+document.getElementById("origin").onchange = renderCalc;
+document.getElementById("backhome").onchange = renderCalc;
+document.getElementById("daylimit").onchange = renderCalc;
+document.getElementById("autosort").onclick = function(){
+  if(SEL.length<2) return;
+  var seq=[document.getElementById("origin").value], rest=SEL.slice(), cur=seq[0];
+  while(rest.length){
+    var best=null,bi=-1;
+    rest.forEach(function(id,i){ var L=leg(cur,id); if(!L) return; if(!best||L.h<best.h){ best=L; bi=i; } });
+    if(bi<0) break;
+    cur=rest[bi]; seq.push(cur); rest.splice(bi,1);
+  }
+  SEL = seq.slice(1); saveSel(); renderCards(); renderCalc();
+};
+
+/* ---------- 住宿附录 ---------- */
+(function(){
+  var h = '<h2>住宿附录 · 按地点推荐（每地点 3 家）</h2>';
+  h += '<p class="lead">房型优先列出可容纳 2 个家庭的套房（两室/家庭套房）与可相邻的双床房×2。价格区间为平台挂牌参考价。</p>';
+  h += '<div class="notice">'+esc(D.platformNote)+'</div>';
+  D.stays.forEach(function(r){
+    h += '<div class="card"><h3 style="margin-top:0">'+esc(r.region)+'</h3><div class="tiny">'+esc(r.note)+'</div>';
+    h += '<div class="grid g3" style="margin-top:10px">';
+    r.hotels.forEach(function(x){
+      h += '<div class="card" style="margin:0;background:var(--panel2)">'
+        + '<div style="font-size:14px;font-weight:600">'+esc(x.name)+'</div>'
+        + '<div class="pr tiny" style="margin:4px 0">'+esc(x.type)+'</div>'
+        + '<div><span class="tag">'+esc(x.room)+'</span><span class="tag w">'+esc(x.price)+'</span></div>'
+        + '<div class="tiny" style="margin:6px 0">'+esc(x.why)+'</div>'
+        + '<div>'+x.tags.map(function(t){return '<span class="tag b">'+esc(t)+'</span>';}).join("")+'</div>'
+        + '<table class="tiny" style="margin-top:8px"><thead><tr><th>平台</th><th>价格</th><th>链接</th></tr></thead><tbody>'
+        + ['ctrip','qunar','meituan'].map(function(k){
+            var pr = (x.prices && x.prices[k]) ? x.prices[k] : "以实时价为准";
+            return '<tr><td>'+D.platforms[k]+'</td><td>'+esc(pr)+'</td>'
+              + '<td><a target="_blank" rel="noopener" href="'+D.platformUrl[k]+enc(x.name)+'">查价</a></td></tr>';
+          }).join("")
+        + '</tbody></table>'
+        + '<div class="row" style="margin-top:6px"><a class="btn sm" target="_blank" rel="noopener" href="'+amap(x.name)+'">地图定位</a></div>'
+        + '</div>';
+    });
+    h += '</div>';
+    if(r.upgrade) h += '<div class="tiny" style="margin-top:8px">'+esc(r.upgrade)+'</div>';
+    h += '</div>';
+  });
+  h += '<div class="tiny">平台搜索链接为直达入口：若未自动定位到该酒店，请在平台站内用酒店名再搜一次。</div>';
+  document.getElementById("v-stay").innerHTML = h;
+})();
+
+/* ---------- 工具页 ---------- */
+(function(){
+  var h = '';
+  D.tools.forEach(function(g){
+    h += '<h3>'+esc(g.group)+'</h3><div class="grid g3">';
+    g.items.forEach(function(it){
+      h += '<a class="poi" target="_blank" rel="noopener" href="'+it.url+'" style="display:block">'
+        + '<div class="pn">'+esc(it.name)+'</div><div class="pd">'+esc(it.note)+'</div></a>';
+    });
+    h += '</div>';
+  });
+  h += '<div class="notice" style="margin-top:14px">潮汐提示：湛江港 9/29 预报低潮 06:51、18:27，潮差约 2.6 m、潮汐系数 90（大潮）；网页端逐日潮汐表通常只发布当月数据，10/1 后请用 App 查 10/2-10/6 的低潮时段。南极村面向北部湾，需单独查徐闻/角尾站点。</div>';
+  document.getElementById("toolsbox").innerHTML = h;
+})();
+
+/* ---------- 留言 ---------- */
+function toast(msg){
+  var d=document.getElementById("toast");
+  d.textContent=msg; d.classList.add("on");
+  clearTimeout(window.__tt); window.__tt=setTimeout(function(){ d.classList.remove("on"); },2600);
+}
+var CMT = [];
+try{ CMT = JSON.parse(localStorage.getItem("zj_cm")||"[]") || []; }catch(e){ CMT=[]; }
+function saveCm(){ try{ localStorage.setItem("zj_cm", JSON.stringify(CMT)); }catch(e){} }
+function renderCm(){
+  var all = D.seedComments.concat(CMT);
+  document.getElementById("cmlist").innerHTML = all.map(function(c){
+    return '<div class="cm"><div class="h">'+esc(c.name||"匿名")+' · '+esc(c.type||"")+' · '+esc(c.time||"")+
+      (c.status?' · <span style="color:var(--accent2)">'+esc(c.status)+'</span>':'')+'</div>'+esc(c.text)+'</div>';
+  }).join("") || '<div class="tiny">暂无留言。</div>';
+  var b = document.getElementById("cmbadge");
+  if(CMT.length){ b.style.display="inline-block"; b.textContent=CMT.length; } else { b.style.display="none"; }
+}
+document.getElementById("cmadd").onclick = function(){
+  var t = document.getElementById("cmtext").value.trim();
+  if(!t){ toast("请先填写留言内容"); return; }
+  var d = new Date();
+  CMT.unshift({
+    name: document.getElementById("cmname").value.trim() || "匿名游客",
+    type: document.getElementById("cmtype").value,
+    time: d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"),
+    text: t
+  });
+  saveCm(); renderCm(); document.getElementById("cmtext").value="";
+  toast("留言已提交，可在下方“实时留言”区看到");
+};
+document.getElementById("copycm").onclick = function(){
+  var txt = D.seedComments.concat(CMT).map(function(c,i){ return (i+1)+". ["+c.type+"] "+(c.name||"匿名")+" "+c.time+"：" + c.text; }).join("\n");
+  var ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast("已复制 "+ (D.seedComments.length+CMT.length) +" 条留言，可粘贴到群里发给路飞"); }
+  catch(e){ toast("复制失败，请手动选择文本"); }
+  document.body.removeChild(ta);
+};
+var clearArmed=false;
+document.getElementById("clearlocal").onclick = function(){
+  if(!clearArmed){ clearArmed=true; this.textContent="再次点击确认清空"; toast("再次点击即清空本机未归档留言"); setTimeout(function(){ clearArmed=false; document.getElementById("clearlocal").textContent="清空本机未提交记录"; },3500); return; }
+  CMT=[]; saveCm(); renderCm(); clearArmed=false; this.textContent="清空本机未提交记录"; toast("本机留言记录已清空");
+};
+renderCm();
+
+/* ---------- 启动 ---------- */
+renderCards(); renderCalc();
+show((location.hash||"").replace("#/","") || "planA");
+})();
+</script>
+</body>
+</html>
