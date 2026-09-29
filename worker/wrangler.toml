@@ -1,0 +1,13 @@
+name = "zj-roadtrip-comments"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+# KV 命名空间：先创建再填入 id
+#   npx wrangler kv namespace create COMMENTS
+[[kv_namespaces]]
+binding = "COMMENTS"
+id = "填入你的KV命名空间ID"
+
+[vars]
+# 整理口令（可选）：设置后 /moderate 与 /delete 才启用
+ADMIN_TOKEN = ""

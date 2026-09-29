@@ -141,7 +141,8 @@ footer{max-width:1180px;margin:0 auto;padding:18px;border-top:1px solid var(--li
     <div id="toolsbox"></div>
 
     <h2>实时留言</h2>
-    <p class="lead">下方显示已提交的评价与需求。提交后立即显示（保存在本机浏览器）；路飞每小时整理一次，经确认后并入页面内容。</p>
+    <p class="lead">下方显示已提交的评价与需求。配置后端后，任意访客提交的留言所有访问者刷新即可看到；路飞每小时整理一次，经确认后并入页面内容。</p>
+    <div class="tiny" id="cmstatus" style="margin-bottom:8px"></div>
     <div class="row">
       <button class="btn g" id="copycm">复制全部留言（发给路飞）</button>
       <button class="btn" id="clearlocal">清空本机未提交记录</button>
@@ -447,44 +448,76 @@ function toast(msg){
   d.textContent=msg; d.classList.add("on");
   clearTimeout(window.__tt); window.__tt=setTimeout(function(){ d.classList.remove("on"); },2600);
 }
-var CMT = [];
-try{ CMT = JSON.parse(localStorage.getItem("zj_cm")||"[]") || []; }catch(e){ CMT=[]; }
-function saveCm(){ try{ localStorage.setItem("zj_cm", JSON.stringify(CMT)); }catch(e){} }
+var CM_API = (D.meta.commentApi||"").replace(/\/+$/,"");
+var CM = { remote:[], local:[], live:false };
+try{ CM.local = JSON.parse(localStorage.getItem("zj_cm")||"[]") || []; }catch(e){ CM.local=[]; }
+function saveLocal(){ try{ localStorage.setItem("zj_cm", JSON.stringify(CM.local)); }catch(e){} }
+function listNow(){ return D.seedComments.concat(CM.live ? CM.remote : CM.local); }
+function setCmStatus(msg, ok){
+  document.getElementById("cmstatus").innerHTML = '<span class="tag '+(ok?"":"w")+'">'+(ok?"实时模式":"本机模式")+'</span>'+esc(msg);
+}
 function renderCm(){
-  var all = D.seedComments.concat(CMT);
+  var all = listNow();
   document.getElementById("cmlist").innerHTML = all.map(function(c){
     return '<div class="cm"><div class="h">'+esc(c.name||"匿名")+' · '+esc(c.type||"")+' · '+esc(c.time||"")+
       (c.status?' · <span style="color:var(--accent2)">'+esc(c.status)+'</span>':'')+'</div>'+esc(c.text)+'</div>';
   }).join("") || '<div class="tiny">暂无留言。</div>';
   var b = document.getElementById("cmbadge");
-  if(CMT.length){ b.style.display="inline-block"; b.textContent=CMT.length; } else { b.style.display="none"; }
+  var pending = CM.live ? CM.remote.filter(function(c){ return !c.status; }).length : CM.local.length;
+  if(pending){ b.style.display="inline-block"; b.textContent=pending; } else { b.style.display="none"; }
+}
+function loadRemote(){
+  if(!CM_API){ setCmStatus("未配置后端：留言暂存在本机浏览器，可用“复制全部留言”发给路飞。", false); return; }
+  fetch(CM_API+"/comments").then(function(r){ return r.json(); }).then(function(d){
+    CM.remote = (d && d.comments) ? d.comments : []; CM.live = true; renderCm();
+    setCmStatus("已连通后端：共 "+CM.remote.length+" 条留言，每 60 秒自动刷新；路飞每小时整理一次。", true);
+  }).catch(function(){
+    CM.live = false; renderCm();
+    setCmStatus("后端暂时不可达：已切回本机模式，留言仍可提交并复制给路飞。", false);
+  });
+}
+function submitLocal(){
+  var d = new Date(), p=function(n){ return String(n).padStart(2,"0"); };
+  CM.local.unshift({
+    name: document.getElementById("cmname").value.trim() || "匿名游客",
+    type: document.getElementById("cmtype").value,
+    time: d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes()),
+    text: document.getElementById("cmtext").value.trim()
+  });
+  saveLocal(); renderCm(); document.getElementById("cmtext").value="";
 }
 document.getElementById("cmadd").onclick = function(){
   var t = document.getElementById("cmtext").value.trim();
   if(!t){ toast("请先填写留言内容"); return; }
-  var d = new Date();
-  CMT.unshift({
-    name: document.getElementById("cmname").value.trim() || "匿名游客",
-    type: document.getElementById("cmtype").value,
-    time: d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")+" "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0"),
-    text: t
-  });
-  saveCm(); renderCm(); document.getElementById("cmtext").value="";
-  toast("留言已提交，可在下方“实时留言”区看到");
+  if(CM.live && CM_API){
+    fetch(CM_API+"/comment", {method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({name:document.getElementById("cmname").value.trim(), type:document.getElementById("cmtype").value, text:t})})
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if(d && d.ok){ toast("留言已提交，所有访问者刷新即可看到"); document.getElementById("cmtext").value=""; loadRemote(); }
+        else { toast("提交失败："+((d&&d.error)||"未知错误")); }
+      })
+      .catch(function(){ submitLocal(); toast("后端提交失败，已暂存本机，请点“复制全部留言”发给路飞"); });
+  } else {
+    submitLocal(); toast("留言已保存（本机模式），可点“复制全部留言”发给路飞");
+  }
 };
 document.getElementById("copycm").onclick = function(){
-  var txt = D.seedComments.concat(CMT).map(function(c,i){ return (i+1)+". ["+c.type+"] "+(c.name||"匿名")+" "+c.time+"：" + c.text; }).join("\n");
+  var arr = listNow();
+  var txt = arr.map(function(c,i){ return (i+1)+". ["+c.type+"] "+(c.name||"匿名")+" "+c.time+"：" + c.text; }).join("\n");
   var ta=document.createElement("textarea"); ta.value=txt; document.body.appendChild(ta); ta.select();
-  try{ document.execCommand("copy"); toast("已复制 "+ (D.seedComments.length+CMT.length) +" 条留言，可粘贴到群里发给路飞"); }
+  try{ document.execCommand("copy"); toast("已复制 "+arr.length+" 条留言，可粘贴到群里发给路飞"); }
   catch(e){ toast("复制失败，请手动选择文本"); }
   document.body.removeChild(ta);
 };
 var clearArmed=false;
 document.getElementById("clearlocal").onclick = function(){
   if(!clearArmed){ clearArmed=true; this.textContent="再次点击确认清空"; toast("再次点击即清空本机未归档留言"); setTimeout(function(){ clearArmed=false; document.getElementById("clearlocal").textContent="清空本机未提交记录"; },3500); return; }
-  CMT=[]; saveCm(); renderCm(); clearArmed=false; this.textContent="清空本机未提交记录"; toast("本机留言记录已清空");
+  CM.local=[]; saveLocal(); renderCm(); clearArmed=false; this.textContent="清空本机未提交记录"; toast("本机留言记录已清空");
 };
+loadRemote();
 renderCm();
+if(CM_API) setInterval(loadRemote, 60000);
 
 /* ---------- 启动 ---------- */
 renderCards(); renderCalc();

@@ -12,6 +12,8 @@ window.ZJ = {
     updated: "2026-09-29",
     window: "2026-10-02 ~ 10-06",
     departures: "广州黄埔 / 佛山顺德",
+    /* 留言后端地址（Cloudflare Worker，见 worker/README.md）。留空 = 本机模式 */
+    commentApi: "",
     note: "本页里程为路网实际里程（非直线距离）。国庆期间实际用时按 +30~50% 估算。"
   },
 
